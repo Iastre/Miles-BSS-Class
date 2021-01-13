@@ -1,0 +1,4 @@
+-- No IDs can or should be inserted because they are auto-generated via the IDENTITY keyword.
+
+INSERT INTO Location(Name)
+VALUES("Plymouth Rock");
