@@ -1,5 +1,23 @@
--- Location table:
+-- Drop tables:
+DROP TABLE IF EXISTS TavernGuest;
+DROP TABLE IF EXISTS GuestClass;
+DROP TABLE IF EXISTS Class;
+DROP TABLE IF EXISTS Guest;
+DROP TABLE IF EXISTS GuestStatus;
+DROP TABLE IF EXISTS Sales;
+DROP TABLE IF EXISTS Service;
+DROP TABLE IF EXISTS Status;
+DROP TABLE IF EXISTS Shipment;
+DROP TABLE IF EXISTS Supply;
+DROP TABLE IF EXISTS TavernUser;
+DROP TABLE IF EXISTS UserRole;
+DROP TABLE IF EXISTS Role;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Rats; -- Leave in to remove legacy tables.
+DROP TABLE IF EXISTS Tavern;
 DROP TABLE IF EXISTS Location;
+
+-- Location table:
 
 CREATE TABLE Location (
 	LocationID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -7,7 +25,6 @@ CREATE TABLE Location (
 );
 
 -- Tavern table:
-DROP TABLE IF EXISTS Tavern;
 
 CREATE TABLE Tavern (
 	TavernID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -17,16 +34,14 @@ CREATE TABLE Tavern (
 );
 
 -- Rats table:
-DROP TABLE IF EXISTS Rats;
-
+/* -- Obsoleted 1/14/21
 CREATE TABLE Rats (
 	RatID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	Name VARCHAR(255) NOT NULL,
 	TavernID INT NOT NULL FOREIGN KEY REFERENCES Tavern(TavernID)
-);
+);*/
 
 -- User table:
-DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
 	UserID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -36,7 +51,6 @@ CREATE TABLE Users (
 );
 
 -- Role table:
-DROP TABLE IF EXISTS Role;
 
 CREATE TABLE Role (
 	RoleID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -45,7 +59,6 @@ CREATE TABLE Role (
 );
 
 -- Link Role and User:
-DROP TABLE IF EXISTS UserRole;
 
 CREATE TABLE UserRole (
 	UserID INT NOT NULL FOREIGN KEY REFERENCES Users(UserID),
@@ -53,7 +66,6 @@ CREATE TABLE UserRole (
 );
 
 -- Link Tavern and User:
-DROP TABLE IF EXISTS TavernUser;
 
 CREATE TABLE TavernUser (
 	TavernID INT NOT NULL FOREIGN KEY REFERENCES Tavern(TavernID),
@@ -61,7 +73,6 @@ CREATE TABLE TavernUser (
 );
 
 -- Supply table:
-DROP TABLE IF EXISTS Supply;
 
 CREATE TABLE Supply (
 	SupplyID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -73,7 +84,6 @@ CREATE TABLE Supply (
 );
 
 -- Shipment table:
-DROP TABLE IF EXISTS Shipment;
 
 CREATE TABLE Shipment (
 	ShipmentID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -85,7 +95,6 @@ CREATE TABLE Shipment (
 );
 
 -- Status table:
-DROP TABLE IF EXISTS Status;
 
 CREATE TABLE Status (
 	StatusID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -93,7 +102,6 @@ CREATE TABLE Status (
 );
 
 -- Service table:
-DROP TABLE IF EXISTS Service;
 
 CREATE TABLE Service (
 	ServiceID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -103,7 +111,6 @@ CREATE TABLE Service (
 );
 
 -- Sales table:
-DROP TABLE IF EXISTS Sales;
 
 CREATE TABLE Sales (
 	SaleID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -113,4 +120,46 @@ CREATE TABLE Sales (
 	ServiceID INT NOT NULL FOREIGN KEY REFERENCES Service(ServiceID),
 	UserID INT NOT NULL FOREIGN KEY REFERENCES Users(UserID),
 	TavernID INT NOT NULL FOREIGN KEY REFERENCES Tavern(TavernID)
+);
+
+
+
+-- Status table:
+
+CREATE TABLE GuestStatus (
+	GuestStatusID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	Name VARCHAR(255)
+);
+
+-- Guest table:
+
+CREATE TABLE Guest (
+	GuestID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	Name VARCHAR(255) NOT NULL,
+	Birthday DATETIME NOT NULL,
+	Cakeday DATETIME,
+	Notes VARCHAR(255),
+	StatusID INT NOT NULL FOREIGN KEY REFERENCES GuestStatus(GuestStatusID)
+);
+
+-- Class table:
+
+CREATE TABLE Class (
+	ClassID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
+	Name VARCHAR(255) NOT NULL
+);
+
+-- Link Guest and Class, include level of that class:
+
+CREATE TABLE GuestClass (
+	ClassID INT NOT NULL FOREIGN KEY REFERENCES Class(ClassID),
+	GuestID INT NOT NULL FOREIGN KEY REFERENCES Guest(GuestID),
+	Level INT NOT NULL
+);
+
+-- Link Guest and Tavern:
+
+CREATE TABLE TavernGuest (
+	TavernID INT NOT NULL FOREIGN KEY REFERENCES Tavern(TavernID),
+	GuestID INT NOT NULL FOREIGN KEY REFERENCES Guest(GuestID)
 );
