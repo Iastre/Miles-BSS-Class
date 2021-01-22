@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS GuestClass;
 DROP TABLE IF EXISTS Class;
 DROP TABLE IF EXISTS Guest;
 DROP TABLE IF EXISTS GuestStatus;
+DROP TABLE IF EXISTS SalesSupply;
 DROP TABLE IF EXISTS Sales;
 DROP TABLE IF EXISTS Service;
 DROP TABLE IF EXISTS Status;
@@ -27,13 +28,15 @@ CREATE TABLE Location (
 -- Tavern table:
 
 CREATE TABLE Tavern (
-	TavernID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	Name VARCHAR(255) NOT NULL,
 	Floors INT NOT NULL,
 	LocationID INT NOT NULL FOREIGN KEY REFERENCES Location(LocationID)
 );
 
--- Rats table:
+-- Modified to demonstrate an ALTER statement
+ALTER TABLE Tavern ADD TavernID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY;
+
+-- Rats table: (no longer tracked)
 /* -- Obsoleted 1/14/21
 CREATE TABLE Rats (
 	RatID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -44,11 +47,13 @@ CREATE TABLE Rats (
 -- User table:
 
 CREATE TABLE Users (
-	UserID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	Name VARCHAR(255) NOT NULL,
 	Description VARCHAR(255),
 	Birthday DATETIME
 );
+
+-- Modified to demonstrate an ALTER statement
+ALTER TABLE Users ADD UserID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY;
 
 -- Role table:
 
@@ -124,7 +129,16 @@ CREATE TABLE Sales (
 
 
 
--- Status table:
+-- SalesSupply table:
+
+CREATE TABLE SalesSupply (
+	SaleID INT NOT NULL FOREIGN KEY REFERENCES Sales(SaleID),
+	SupplyID INT NOT NULL FOREIGN KEY REFERENCES Supply(SupplyID)
+);
+
+
+
+-- GuestStatus table:
 
 CREATE TABLE GuestStatus (
 	GuestStatusID INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
