@@ -23,8 +23,8 @@ INSERT INTO Tavern(Name,Floors,LocationID) VALUES ('At the End of the Universe',
 
 
 -- Seed Users:
-INSERT INTO User(Name,Birthday) VALUES ('Joe','19901020 12:00:00 AM');
-INSERT INTO User(Name,Description,Birthday) VALUES ('Frank','scar on forehead','19780307 12:00:00 AM');
+INSERT INTO Users(Name,Birthday) VALUES ('Joe','19901020 12:00:00 AM');
+INSERT INTO Users(Name,Description,Birthday) VALUES ('Frank','scar on forehead','19780307 12:00:00 AM');
 
 
 -- Seed Roles:
