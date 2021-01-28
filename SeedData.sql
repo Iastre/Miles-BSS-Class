@@ -63,7 +63,18 @@ INSERT INTO Service(Name,StatusID,TavernID) VALUES ('Pool',2,1);
 
 
 -- Seed Sales:
-INSERT INTO Sales(Price,Date,Amount,ServiceID,UserID,TavernID) VALUES (10.65,'20210115 3:45:50 PM',1,1,1,1);
+INSERT INTO Sales(Price,Date,Amount,ServiceID,UserID,TavernID) VALUES
+	(10.65,'20210115 3:45:50 PM',1,1,1,1)
+	(20.48,'20050607',3,2,1,4)
+	(12.05,'20100204',1,1,2,3)
+	(13.14,'20070817',2,2,1,1)
+	(40.45,'20030624',5,1,1,5)
+	(20.32,'20121202',2,2,2,3)
+	(18.75,'20200202',1,1,1,1)
+	(76.77,'19950304',10,1,2,3)
+	(5.04,'20011224',1,2,2,2)
+	(16.14,'20040404',1,1,2,1)
+	(15.15,'20151215',1,1,2,1);
 
 
 -- Seed SalesSupply:
@@ -81,6 +92,8 @@ INSERT INTO GuestStatus(Name) VALUES ('placid');
 -- Seed Guests:
 INSERT INTO Guest(Name,Birthday,Cakeday,Notes,StatusID) VALUES ('Joe','19901020 12:00:00 AM','19901020 12:00:00 AM','Cakeday IS birthday for him',1);
 INSERT INTO Guest(Name,Birthday,Notes,StatusID) VALUES ('Frank','19780307 12:00:00 AM','No Cakeday',3);
+INSERT INTO Guest(Name,Birthday,Cakeday,Notes,StatusID) VALUES ('Emily','20101224 12:00:00 AM','20150516 12:00:00 AM','',1);
+INSERT INTO Guest(Name,Birthday,Cakeday,Notes,StatusID) VALUES ('Frank','20051119 12:00:00 AM','20100708 12:00:00 AM','Not that Frank',3);
 
 
 -- Seed Classes:
@@ -100,6 +113,13 @@ INSERT INTO GuestClass(ClassID,GuestID,Level) VALUES (2,2,4);
 -- Seed TavernGuest:
 INSERT INTO TavernGuest(TavernID,GuestID) VALUES (1,1);
 INSERT INTO TavernGuest(TavernID,GuestID) VALUES (1,2);
+
+
+-- Seed RoomStatus:
+INSERT INTO RoomStatus(Name) VALUES ('available'), ('unavailable');
+
+-- Seed Room:
+INSERT INTO Room(StatusID, TavernID, Cost) VALUES (1, 1, 50), (1, 3, 120);
 
 
 -- The following statements should fail when run.
