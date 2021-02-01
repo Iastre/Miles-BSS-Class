@@ -23,7 +23,12 @@ INSERT INTO Tavern(Name,Floors,LocationID) VALUES ('At the End of the Universe',
 
 
 -- Seed Users:
-INSERT INTO Users(Name,Birthday) VALUES ('Joe','19901020 12:00:00 AM');
+INSERT INTO Users(Name,Birthday) VALUES
+	('Joe','19901020 12:00:00 AM'),
+	('Fred','19850115 12:00:00 AM'),
+	('Jill','19420619 12:00:00 AM'),
+	('Sue','19670302 12:00:00 AM'),
+	('Peter','19981112 12:00:00 AM');
 INSERT INTO Users(Name,Description,Birthday) VALUES ('Frank','scar on forehead','19780307 12:00:00 AM');
 
 
@@ -31,14 +36,31 @@ INSERT INTO Users(Name,Description,Birthday) VALUES ('Frank','scar on forehead',
 INSERT INTO Role(Name,Description) VALUES ('Owner','Owns the tavern');
 INSERT INTO Role(Name,Description) VALUES ('Barkeep','Tends the bar');
 INSERT INTO Role(Name,Description) VALUES ('Patron','A guest at the tavern');
+INSERT INTO Role(Name,Description) VALUES ('Admin','Administrator');
 
 
 -- Seed UserRoles:
-INSERT INTO UserRole(UserID,RoleID) VALUES (1,1);
+INSERT INTO UserRole(UserID,RoleID) VALUES
+	(1,1),
+	(1,4),
+	(3,3),
+	(2,2),
+	(5,3),
+	(4,4),
+	(6,3),
+	(3,4);
 
 
 -- Seed TavernUsers:
-INSERT INTO TavernUser(TavernID,UserID) VALUES (1,1);
+INSERT INTO TavernUser(TavernID,UserID) VALUES
+	(1,1),
+	(2,3),
+	(3,6),
+	(4,10),
+	(5,2),
+	(6,8),
+	(2,1),
+	(5,1);
 
 
 -- Seed Supply:
@@ -60,6 +82,7 @@ INSERT INTO Status(Name) VALUES ('discontinued');
 -- Seed Services:
 INSERT INTO Service(Name,StatusID,TavernID) VALUES ('Weapon Sharpening',1,1);
 INSERT INTO Service(Name,StatusID,TavernID) VALUES ('Pool',2,1);
+INSERT INTO Service(Name,StatusID,TavernID) VALUES ('Rooms',1,1);
 
 
 -- Seed Sales:
@@ -74,7 +97,9 @@ INSERT INTO Sales(Price,Date,Amount,ServiceID,UserID,TavernID) VALUES
 	(76.77,'19950304',10,1,2,3),
 	(5.04,'20011224',1,2,2,2),
 	(16.14,'20040404',1,1,2,1),
-	(15.15,'20151215',1,1,2,1);
+	(15.15,'20151215',1,1,2,1),
+	(,'',1,3,,),
+	;
 
 
 -- Seed SalesSupply:
@@ -105,9 +130,12 @@ INSERT INTO Class(Name) VALUES ('barbarian');
 
 
 -- Seed GuestClass:
-INSERT INTO GuestClass(ClassID,GuestID,Level) VALUES (1,1,1);
-INSERT INTO GuestClass(ClassID,GuestID,Level) VALUES (3,1,2);
-INSERT INTO GuestClass(ClassID,GuestID,Level) VALUES (2,2,4);
+INSERT INTO GuestClass(ClassID,GuestID,Level) VALUES
+	(1,1,10),
+	(1,4,2),
+	(3,1,12),
+	(2,2,4),
+	(2,5,6);
 
 
 -- Seed TavernGuest:
@@ -119,7 +147,26 @@ INSERT INTO TavernGuest(TavernID,GuestID) VALUES (1,2);
 INSERT INTO RoomStatus(Name) VALUES ('available'), ('unavailable');
 
 -- Seed Room:
-INSERT INTO Room(StatusID, TavernID, Cost) VALUES (1, 1, 50), (1, 3, 120);
+INSERT INTO Room(StatusID,TavernID,Cost) VALUES
+	(1, 1, 50),
+	(1, 2, 30),
+	(1, 4, 80),
+	(1, 5, 55),
+	(1, 8, 70),
+	(1, 10, 500),
+	(1, 3, 120);
+
+-- Seed RoomStay:
+INSERT INTO RoomStay(SaleID,RoomID,GuestID,Date,Cost) VALUES
+	(12,1,1,'20070707',50),
+	(13,5,4,'20100304',70),
+	(14,7,3,'20081229',120),
+	(15,4,4,'20081020',55),
+	(16,2,2,'20090406',30),
+	(17,6,3,'20081130',500),
+	(18,3,2,'20060810',80),
+	(19,1,1,'20080808',50),
+	(20,4,4,'20081117',55);
 
 
 -- The following statements should fail when run.
