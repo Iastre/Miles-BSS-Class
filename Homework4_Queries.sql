@@ -19,7 +19,7 @@ WHERE r.Name = 'Admin';
 SELECT g.Name, g.Birthday, g.Cakeday, g.Notes, gs.Name AS Status,
 gc.Level, c.Name AS Class
 FROM GUEST g
-LEFT JOIN GuestStatus gs ON g.StatusID = gs.StatusID
+LEFT JOIN GuestStatus gs ON g.StatusID = gs.GuestStatusID
 LEFT JOIN GuestClass gc ON g.GuestID = gc.GuestID
 LEFT JOIN Class c ON gc.ClassID = c.ClassID
 ORDER BY g.Name ASC;
@@ -38,6 +38,8 @@ WHERE GuestID IN (
 );
 
 --Guests with 2 or more classes with levels higher than 5:
+--(solution shows Guests with 2 or more classes that are both (all) over 5,
+--rather than Guests with 2 or more classes and at least one level over 5)
 SELECT * FROM Guest
 WHERE GuestID IN (
 	SELECT GuestID FROM GuestClass
@@ -47,14 +49,19 @@ WHERE GuestID IN (
 );
 
 --Guests with only their highest level class:
-SELECT g.Name, MAX(gc.Level), c.Name AS Class FROM Guest g
+--(In case of a tie for highest class, solution will show both classes)
+SELECT gst.Name, tbl.Level, cls.Name
+FROM GUEST gst
+JOIN GuestClass gstc ON gst.GuestID = gstc.GuestID
+JOIN Class cls ON gstc.ClassID = cls.ClassID
+JOIN
+(SELECT g.Name, MAX(gc.Level) AS Level
+FROM Guest g
 LEFT JOIN GuestClass gc ON g.GuestID = gc.GuestID
 LEFT JOIN Class c ON gc.ClassID = c.ClassID
-GROUP BY g.Name;
+GROUP BY g.Name) tbl ON gst.Name = tbl.Name AND gstc.Level = tbl.Level;
 
 --Guests who stayed within a certain date range:
 SELECT g.Name, g.Notes, rs.Date, rs.Cost FROM Guest g
 LEFT JOIN RoomStay rs ON g.GuestID = rs.GuestID
 WHERE rs.Date BETWEEN '20080101' AND '20081231';
-
---(Add IDENTITY and PRIMARY KEY constraints to the SELECT CREATE query)
