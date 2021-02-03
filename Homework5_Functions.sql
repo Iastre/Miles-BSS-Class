@@ -8,6 +8,7 @@ AS
 BEGIN
 	DECLARE @result varchar(20);
 	SELECT @result = (CASE
+		WHEN @level IS NULL THEN '(no class)'
 		WHEN @level < 5 THEN 'beginner'
 		WHEN @level >= 5 AND @level < 10 THEN 'intermediate'
 		ELSE 'expert'
@@ -28,13 +29,16 @@ RETURN
 (
 
 SELECT r.RoomID, r.Cost, s.Name AS Status, t.Name AS Tavern, l.Name AS Location
-FROM Room r LEFT JOIN RoomStay rs ON r.RoomID = rs.RoomID
+FROM Room r
 LEFT JOIN Tavern t ON r.TavernID = t.TavernID
 LEFT JOIN Location l ON t.LocationID = l.LocationID
 LEFT JOIN RoomStatus s ON r.StatusID = s.StatusID
-WHERE CAST(rs.Date AS DATE) <> @date;
+WHERE RoomID NOT IN (
+	SELECT r.RoomID
+	FROM Room r LEFT JOIN RoomStay rs ON r.RoomID = rs.RoomID
+	WHERE CAST(rs.Date AS DATE) = @date)
 
-)
+);
 
 GO
 
@@ -54,6 +58,5 @@ LEFT JOIN Tavern t ON r.TavernID = t.TavernID
 LEFT JOIN Location l ON t.LocationID = l.LocationID
 LEFT JOIN RoomStatus s ON r.StatusID = s.StatusID
 WHERE r.Cost >= @min AND r.Cost <= @max
-ORDER BY r.Cost;
 
-)
+);
